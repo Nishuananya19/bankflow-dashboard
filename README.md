@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BankFlow — Digital Banking Dashboard
 
-## Getting Started
+A responsive mock digital banking dashboard built with Next.js App Router, React, TypeScript, and Tailwind CSS. All data is fictional and held in client-side memory; this is an interview demo, not a real banking application.
 
-First, run the development server:
+## Run locally
+
+Requirements: Node.js 20.9+ and npm.
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Mock login
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Use any non-empty email and a password of at least 4 characters. No credentials are sent to a server. The demo login is only a UI gate and is not production authentication.
 
-## Learn More
+## Architecture and state
 
-To learn more about Next.js, take a look at the following resources:
+- `app/page.tsx`: interactive dashboard, mock login, account selection, transaction search/filter/sort/pagination, and transfer flow.
+- `app/globals.css`: global styles and responsive design.
+- Account and transaction types are defined in the page module. Shared account/transaction state lives in the dashboard component so transfer updates are reflected across views.
+- The app is a Client Component because its main interactions rely on local React state. A production implementation should move sensitive operations and authorization to server-side services.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Assumptions and limitations
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- All balances, transactions, and reference numbers are fictional.
+- Transfers are simulated in browser memory and reset on refresh.
+- Authentication is mock-only; do not enter real credentials.
+- No real payment gateway, backend API, database, or server-side authorization is connected.
+- The chart is a lightweight CSS visualization based on mock monthly values.
 
-## Deploy on Vercel
+## Transfer validation test notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Manually verify that the app rejects the same source/destination account, zero or negative amounts, and amounts above the source balance. Confirm invalid transfers leave balances unchanged. A valid transfer decreases the source balance, increases the destination balance, and adds a debit and credit record.
